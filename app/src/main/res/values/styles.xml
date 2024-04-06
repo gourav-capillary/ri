@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="defaultButton">
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">@font/diplomata</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:popupElevation">2dp</item>
+        <item name="android:backgroundTint">#222325</item>
+        <item name="cornerRadius">2dp</item>
+    </style>
+</resources>

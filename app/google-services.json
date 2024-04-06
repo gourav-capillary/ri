@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "870665145686",
+    "project_id": "ri-login-register",
+    "storage_bucket": "ri-login-register.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870665145686:android:336ecbcbecbb8403891af7",
+        "android_client_info": {
+          "package_name": "com.example.ri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT1Yr__btiOMNfRn-HV_dX-Fl3SinvzyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870665145686:android:712fe1e5551fdf3f891af7",
+        "android_client_info": {
+          "package_name": "com.orion.ri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT1Yr__btiOMNfRn-HV_dX-Fl3SinvzyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

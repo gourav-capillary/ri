@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_bottom_home"
+        android:title="Home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/navigation_project"
+        android:icon="@drawable/ic_bottom_project"
+        android:title="Project"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/navigation_task"
+        android:icon="@drawable/ic_bottom_task"
+        android:title="Task"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/navigation_employee"
+        android:icon="@drawable/ic_bottom_employees"
+        android:title="Employee"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_bottom_profile"
+        android:title="Profile"
+        app:showAsAction="always" />
+</menu>

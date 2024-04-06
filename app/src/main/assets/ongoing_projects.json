@@ -1,0 +1,23 @@
+[
+  {
+    "projectId": "1",
+    "projectName": "Project 1",
+    "clientName": "Client A",
+    "description": "This is project 1 description.",
+    "deadline": "2024-05-01"
+  },
+  {
+    "projectId": "2",
+    "projectName": "Project 2",
+    "clientName": "Client B",
+    "description": "This is project 2 description.",
+    "deadline": "2024-06-15"
+  },
+  {
+    "projectId": "3",
+    "projectName": "Project 3",
+    "clientName": "Client C",
+    "description": "This is project 3 description.",
+    "deadline": "2024-07-30"
+  }
+]
