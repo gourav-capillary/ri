@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="3dp"
-    android:background="#666666">
+    android:background="#222325">
 
     <TextView
         android:id="@+id/empName"
@@ -13,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:textSize="25sp"
         android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="John Snow" />
@@ -23,8 +22,8 @@
         android:id="@+id/empID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="01" />
@@ -32,31 +31,29 @@
     <TextView
         android:id="@+id/empDesignation"
         android:layout_width="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/white"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/empName"
         app:layout_constraintTop_toBottomOf="@id/empName"
         tools:text="Software Developer" />
 
-    <TextView
-        android:id="@+id/empContactNumber"
-        android:layout_width="wrap_content"
-        android:textColor="@color/white"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/empDesignation"
-        app:layout_constraintTop_toBottomOf="@+id/empDesignation"
-        tools:text="8777081743" />
-
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_right_arrow"
+        android:layout_width="20dp"
+        android:layout_height="15dp"
         android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_right_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/empDesignation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

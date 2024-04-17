@@ -2,9 +2,12 @@ package com.orion.ri.fragments.employee
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.orion.ri.R
 import com.orion.ri.databinding.ItemEmployeeBinding
+import com.orion.ri.databinding.ItemOngoingProjectsBinding
 import com.orion.ri.model.employee.EmployeeDataClass
 
 class EmployeesAdapter(
@@ -14,7 +17,7 @@ class EmployeesAdapter(
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
         val itemBinding =
-            ItemEmployeeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemOngoingProjectsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return EmployeesViewHolder(itemBinding)
     }
 
@@ -28,17 +31,21 @@ class EmployeesAdapter(
         holder.bind(card, clickListener)
     }
 
-    class EmployeesViewHolder(private val binding: ItemEmployeeBinding) :
+    class EmployeesViewHolder(private val binding: ItemOngoingProjectsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(employee: EmployeeDataClass, clickListener: EmployeeClickedListener) {
 
             binding.root.setOnClickListener {
                 clickListener.clickEmployee(employee)
             }
-            binding.empName.text = employee.name
-            binding.empDesignation.text = employee.designation
-            binding.empContactNumber.text = employee.contactNumber
-            binding.empID.text = employee.id.toString()
+            binding.tvTitle.text = employee.name
+            binding.tvSubtitle.text = employee.designation
+            binding.tvSubtitle.visibility = View.VISIBLE
+            binding.ivIcon.setImageResource(R.drawable.ic_employee_circular)
+//            binding.empName.text = employee.name
+//            binding.empDesignation.text = employee.designation
+//            binding.empContactNumber.text = employee.contactNumber
+//            binding.empID.text = employee.id.toString()
 
         }
 

@@ -29,8 +29,8 @@ class AddEmployeeActivity : BaseActivity() {
     }
 
     private fun initViews() {
-        enableBackButton(binding.addEmpToolbar.backButton)
-        binding.addEmpToolbar.heading.text = "Add Employee"
+        enableBackButton(binding.toolbar.backButton)
+        binding.toolbar.heading.text = "Add Employee"
     }
 
     private fun setupListeners() {

@@ -69,6 +69,7 @@ class LoginActivity : BaseActivity() {
             //user doesnt exist
         } else {
             DashBoardActivity.launchActivity(this)
+            finish()
         }
     }
 

@@ -7,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.orion.ri.activities.ProjectDetailsActivity
+import com.orion.ri.activities.project.ProjectDetailsActivity
 import com.orion.ri.databinding.FragmentProjectOngoingBinding
 import com.orion.ri.fragments.project.ProjectViewModel
-import com.orion.ri.model.project.OnGoingProjectData
+import com.orion.ri.model.project.ProjectsDataItem
 
 class OnGoingProjectFragment : Fragment() {
-    private lateinit var binding : FragmentProjectOngoingBinding
-    val projectViewModel : ProjectViewModel by viewModels()
+    private lateinit var binding: FragmentProjectOngoingBinding
+    val projectViewModel: ProjectViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -22,7 +22,7 @@ class OnGoingProjectFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentProjectOngoingBinding.inflate(inflater,container,false)
+        binding = FragmentProjectOngoingBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,17 +32,26 @@ class OnGoingProjectFragment : Fragment() {
     }
 
     private fun init() {
-        val ongoingProjectsList= projectViewModel.getOngoingProjectsData()
+        val ongoingProjectsList = projectViewModel.getProjectsList()
+
+        if (ongoingProjectsList.isEmpty()) {
+            binding.rvOnGoingProjects.visibility = View.GONE
+            binding.emptyProjectScreen.root.visibility = View.VISIBLE
+        } else {
+            binding.rvOnGoingProjects.visibility = View.VISIBLE
+            binding.emptyProjectScreen.root.visibility = View.GONE
+        }
 
         val layoutManager = LinearLayoutManager(context)
         binding.rvOnGoingProjects.layoutManager = layoutManager
 
-        val adapter = OnGoingProjectsAdapter(context,ongoingProjectsList,object : ProjectClickedListener{
-            override fun clickProject(ongoingProject: OnGoingProjectData) {
-                ProjectDetailsActivity.launchActivity(requireActivity(),ongoingProject)
-            }
+        val adapter =
+            OnGoingProjectsAdapter(context, ongoingProjectsList, object : ProjectClickedListener {
+                override fun clickProject(ongoingProject: ProjectsDataItem) {
+                    ProjectDetailsActivity.launchActivity(requireActivity(), ongoingProject)
+                }
 
-        })
+            })
         binding.rvOnGoingProjects.adapter = adapter
 
     }

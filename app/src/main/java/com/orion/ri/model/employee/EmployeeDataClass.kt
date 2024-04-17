@@ -13,4 +13,5 @@ data class EmployeeDataClass(
     val designation: String?,
     val qualification: String? = null,
     val experience: String? = null,
+    var userType: String? = null
     ):Serializable

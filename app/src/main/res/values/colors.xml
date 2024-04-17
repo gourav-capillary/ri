@@ -3,5 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="my_light_primary">#777777</color>
+    <color name="ri_primary">#FF000000</color>
+    <color name="ri_secondary">#e5ff7f</color>
+    <color name="ri_subtitle">#96FBD0</color>
+
+
 
 </resources>

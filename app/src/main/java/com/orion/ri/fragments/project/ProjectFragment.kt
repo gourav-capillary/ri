@@ -1,15 +1,17 @@
 package com.orion.ri.fragments.project
 
+import DataStoreHelper
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.orion.ri.activities.dashboard.DashBoardActivity
+import com.orion.ri.activities.project.AddProjectActivity
 import com.orion.ri.databinding.FragmentProjectBinding
+import com.orion.ri.helper.AppConstants
+import kotlinx.coroutines.runBlocking
 
 class ProjectFragment : Fragment() {
     private lateinit var binding : FragmentProjectBinding
@@ -29,16 +31,31 @@ class ProjectFragment : Fragment() {
 
     private fun init() {
         initViews()
+        setViewByUserType()
         setupTabLayout()
         setupListeners()
     }
 
+    private fun setViewByUserType() {
+        runBlocking {
+            val list = DataStoreHelper.getInstance().getProjects()
+            println("jasdhiashdihsadioh"+list)
+        }
+        val userType = DataStoreHelper.getInstance().getCurrentUserType()
+        if (userType == AppConstants.EMPLOYEE){
+            binding.toolbar.add.visibility = View.GONE
+        }
+    }
+
     private fun setupListeners() {
-        binding.toolbar
+        binding.toolbar.add.setOnClickListener {
+            AddProjectActivity.launchActivity(requireActivity())
+        }
     }
 
     private fun initViews() {
         binding.toolbar.heading.text = "Projects"
+        binding.toolbar.add.visibility = View.VISIBLE
     }
 
     private fun setupTabLayout() {
@@ -48,8 +65,8 @@ class ProjectFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Ongoing Projects"
-                1 -> tab.text = "Upcoming Projects"
+                0 -> tab.text = "Ongoing"
+                1 -> tab.text = "Upcoming"
             }
         }.attach()
 

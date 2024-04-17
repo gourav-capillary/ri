@@ -4,12 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.orion.ri.R
 import com.orion.ri.databinding.ItemOngoingProjectsBinding
-import com.orion.ri.model.project.OnGoingProjectData
+import com.orion.ri.model.project.ProjectsDataItem
 
 class OnGoingProjectsAdapter(
     context: Context?,
-    private val ongoingProjectsList: Array<OnGoingProjectData>,
+    private val ongoingProjectsList: List<ProjectsDataItem>,
     val clickListener: ProjectClickedListener,
 ) : RecyclerView.Adapter<OnGoingProjectsAdapter.OnGoingProjectsViewHolder>() {
 
@@ -31,16 +32,18 @@ class OnGoingProjectsAdapter(
 
     class OnGoingProjectsViewHolder(private val binding: ItemOngoingProjectsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(project: OnGoingProjectData, clickListener: ProjectClickedListener) {
+        fun bind(project: ProjectsDataItem, clickListener: ProjectClickedListener) {
 
             binding.root.setOnClickListener{
                 clickListener.clickProject(project)
             }
-            binding.projectID.text = project.projectId
-            binding.projectName.text = project.projectName
-            binding.projectClient.text = project.clientName
-            binding.projectDeadline.text = project.deadline
-            binding.projectDescription.text = project.description
+//            binding.projectID.text = project.projectId
+            binding.tvTitle.text = project.projectName
+            binding.ivIcon.setImageResource(R.drawable.ic_file_circular)
+
+//            binding.projectClient.text = project.clientName
+//            binding.projectDeadline.text = project.deadline
+//            binding.projectDescription.text = project.description
         }
 
     }
@@ -48,5 +51,5 @@ class OnGoingProjectsAdapter(
 }
 
 interface ProjectClickedListener {
-    fun clickProject(ongoingProject: OnGoingProjectData)
+    fun clickProject(ongoingProject: ProjectsDataItem)
 }

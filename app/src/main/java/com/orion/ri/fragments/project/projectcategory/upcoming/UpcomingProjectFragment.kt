@@ -27,7 +27,6 @@ class UpcomingProjectFragment : Fragment() {
     }
 
     private fun init() {
-        binding.ucText.text = "HHEEHEHHEHH"
     }
 
 
