@@ -69,26 +69,22 @@ class Utils {
 
          }
 
-         fun parseDate(dateString: String, inputFormat: String, outputFormat: String): String {
-             val dateFormat = SimpleDateFormat(inputFormat, Locale.getDefault())
-             val parsedDate = dateFormat.parse(dateString)
-             val outputDateFormat = SimpleDateFormat(outputFormat, Locale.getDefault())
-             return outputDateFormat.format(parsedDate)
-         }
 
          fun sortTasksByDeadline(tasks: List<TaskResponse>): List<TaskResponse> {
-             val inputFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-             val outputFormat = "dd/MM/yyyy"
-             return tasks.sortedBy { task ->
-                 parseDate(task.deadline, inputFormat, outputFormat)
+             val sortedTaskList = tasks.sortedBy {
+                 val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                 val date = format.parse(it.deadline)
+                 date
              }
+             return sortedTaskList
          }
          fun sortProjectsByDeadline(projects: List<ProjectResponse>): List<ProjectResponse> {
-             val inputFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-             val outputFormat = "dd/MM/yyyy"
-             return projects.sortedBy { project ->
-                 parseDate(project.deadline, inputFormat, outputFormat)
+             val sortedProjectsList = projects.sortedBy {
+                 val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                 val date = format.parse(it.deadline)
+                 date
              }
+             return sortedProjectsList
          }
 
          fun filterTaskForUser(tasks: List<TaskResponse>):List<TaskResponse> {
