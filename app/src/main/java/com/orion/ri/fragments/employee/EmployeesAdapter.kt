@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.orion.ri.R
-import com.orion.ri.databinding.ItemEmployeeBinding
 import com.orion.ri.databinding.ItemOngoingProjectsBinding
-import com.orion.ri.model.employee.EmployeeDataClass
+import com.orion.ri.model.response.EmployeesResponse
 
 class EmployeesAdapter(
     context: Context?,
-    private val employeesList: List<EmployeeDataClass>,
+    private val employeesList: List<EmployeesResponse>,
     private val clickListener: EmployeeClickedListener
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
@@ -27,13 +26,13 @@ class EmployeesAdapter(
     }
 
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
-        val card: EmployeeDataClass = employeesList[position]
+        val card: EmployeesResponse = employeesList[position]
         holder.bind(card, clickListener)
     }
 
     class EmployeesViewHolder(private val binding: ItemOngoingProjectsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(employee: EmployeeDataClass, clickListener: EmployeeClickedListener) {
+        fun bind(employee: EmployeesResponse, clickListener: EmployeeClickedListener) {
 
             binding.root.setOnClickListener {
                 clickListener.clickEmployee(employee)
@@ -54,6 +53,6 @@ class EmployeesAdapter(
 }
 
 interface EmployeeClickedListener {
-    fun clickEmployee(ongoingProject: EmployeeDataClass)
+    fun clickEmployee(ongoingProject: EmployeesResponse)
 }
 

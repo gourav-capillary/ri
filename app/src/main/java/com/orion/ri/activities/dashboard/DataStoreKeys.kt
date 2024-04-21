@@ -8,10 +8,14 @@ class DataStoreKeys {
 
     companion object {
         val CURRENT_USER_DATA: Preferences.Key<String> = stringPreferencesKey("user_data")
-        val PROJECTS_LIST: Preferences.Key<String> = stringPreferencesKey("projects_list")
         val EMPLOYEES_LIST: Preferences.Key<String> = stringPreferencesKey("employees_list")
         val EXAMPLE_KEY: Preferences.Key<String> = stringPreferencesKey("Example")
         val DITTO_KEY: Preferences.Key<String> = stringPreferencesKey("DITTO")
         val USER_TYPE: Preferences.Key<String> = stringPreferencesKey("user_type")
+
+
+        //projects
+        val PROJECTS_LIST: Preferences.Key<String> = stringPreferencesKey("projects_list")
+
     }
 }

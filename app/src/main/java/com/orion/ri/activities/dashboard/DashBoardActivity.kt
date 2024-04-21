@@ -12,19 +12,22 @@ import com.google.firebase.auth.auth
 import com.orion.ri.R
 import com.orion.ri.activities.base.BaseActivity
 import com.orion.ri.activities.login.LoginActivity
+import com.orion.ri.viewmodels.CommonViewModel
 import com.orion.ri.databinding.ActivityDashboardBinding
 import com.orion.ri.fragments.home.HomeFragment
 import com.orion.ri.fragments.profile.ProfileFragment
 import com.orion.ri.fragments.project.ProjectFragment
-import com.orion.ri.fragments.project.ProjectViewModel
+import com.orion.ri.viewmodels.ProjectViewModel
 import com.orion.ri.fragments.task.EmployeeFragment
 import com.orion.ri.fragments.task.TaskFragment
-import com.orion.ri.model.employee.EmployeeDataClass
+import com.orion.ri.helper.Utils
+import com.orion.ri.model.response.EmployeesResponse
 
 class DashBoardActivity : BaseActivity() {
     lateinit var binding: ActivityDashboardBinding
     val auth: FirebaseAuth by lazy { Firebase.auth }
     val projectViewModel: ProjectViewModel by viewModels()
+    val commonViewModel: CommonViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,63 +46,24 @@ class DashBoardActivity : BaseActivity() {
     }
 
     fun init() {
-        getDataFromApis()
         basicSetup()
         initBottomNavBar()
         setupListeners()
     }
 
-    private fun getDataFromApis() {
-        getAllUsers()
-        getUserDetails()
-        getProjectDetails()
-    }
 
-    private fun getAllUsers() {
-        val employees = projectViewModel.getEmployeesList()
-        DataStoreHelper.getInstance().saveAllUsers(employees)
-    }
 
-    private fun getUserDetails() {
-        val email = auth.currentUser?.email
-        val user = EmployeeDataClass(
-            id = 1,
-            name = "John Doe",
-            dob = "1990-01-01",
-            email = "john.doe@example.com",
-            address = "123 Street, City",
-            contactNumber = "123-456-7890",
-            designation = "Software Engineer",
-            qualification = "Bachelor's Degree",
-            experience = "5 years",
-            userType = "admin"
-        )
-        if (user.userType.isNullOrEmpty()) {
-            user.userType = "employee"
-        }
-        DataStoreHelper.getInstance().saveCurrentEmployeeProfile(user)
-        DataStoreHelper.getInstance().saveCurrentUserType(user.userType!!)
 
-        if (user.userType == "admin") {
-            setupUI(isAdmin = true)
+
+    private fun setupUI(currentUser: EmployeesResponse) {
+        if (currentUser.userType == "admin") {
+            Utils.showToast(this,"WELCOME EADER")
         } else {
-            setupUI(isAdmin = false)
-        }
-        //call api here
-
-    }
-
-    private fun getProjectDetails() {
-        val projects = projectViewModel.getProjectsList()
-        DataStoreHelper.getInstance().saveProjects(projects)
-
-    }
-
-    private fun setupUI(isAdmin: Boolean) {
-        if (!isAdmin) {
             binding.bottomNavigation.menu.removeItem(R.id.navigation_employee)
+
         }
     }
+
 
     private fun initBottomNavBar() {
         loadFragment(HomeFragment())
@@ -142,9 +106,8 @@ class DashBoardActivity : BaseActivity() {
 
     private fun basicSetup() {
 
-//        binding.bottomNavigation.menu.findItem(R.id.navigation_employee).isVisible =false
-//        binding.headerUserDetails.root.visibility = View.VISIBLE
-
+        val currentUser = DataStoreHelper.getInstance().getCurrentEmployeeProfile()
+        setupUI(currentUser)
         if (actionBar != null) {
             actionBar?.hide()
         }

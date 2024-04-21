@@ -37,10 +37,6 @@ class ProjectFragment : Fragment() {
     }
 
     private fun setViewByUserType() {
-        runBlocking {
-            val list = DataStoreHelper.getInstance().getProjects()
-            println("jasdhiashdihsadioh"+list)
-        }
         val userType = DataStoreHelper.getInstance().getCurrentUserType()
         if (userType == AppConstants.EMPLOYEE){
             binding.toolbar.add.visibility = View.GONE

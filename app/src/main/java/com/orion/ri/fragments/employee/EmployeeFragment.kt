@@ -9,10 +9,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orion.ri.activities.employee.AddEmployeeActivity
 import com.orion.ri.activities.employee.EmployeeDetailsActivity
+import com.orion.ri.api.APIRepository
 import com.orion.ri.databinding.FragmentEmployeeBinding
 import com.orion.ri.fragments.employee.EmployeeClickedListener
 import com.orion.ri.fragments.employee.EmployeesAdapter
-import com.orion.ri.model.employee.EmployeeDataClass
+import com.orion.ri.model.response.EmployeesResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,6 +35,10 @@ class EmployeeFragment : Fragment() {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
     private fun init() {
 
         setupAdapter()
@@ -53,23 +58,15 @@ class EmployeeFragment : Fragment() {
             withContext(Dispatchers.Main)
             {
                 setData(employees)
-
-                println("ADIASBIDHIAS"+employees)
             }
-
-
         }
-
-
-
     }
-fun setData(employees: List<EmployeeDataClass>)
+fun setData(employees: List<EmployeesResponse>)
 {
     val adapter = EmployeesAdapter(context,employees, object :EmployeeClickedListener{
-        override fun clickEmployee(employee: EmployeeDataClass) {
-            EmployeeDetailsActivity.launchActivity(requireActivity(),employee)
+        override fun clickEmployee(employee: EmployeesResponse) {
+            EmployeeDetailsActivity.launchActivity(requireActivity(), employee)
         }
-
     })
     binding.rvEmployees.layoutManager = LinearLayoutManager(requireContext())
     binding.rvEmployees.adapter = adapter

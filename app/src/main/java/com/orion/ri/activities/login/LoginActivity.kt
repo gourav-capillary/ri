@@ -7,8 +7,8 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.orion.ri.activities.splash.StartPageActivity
 import com.orion.ri.activities.base.BaseActivity
-import com.orion.ri.activities.dashboard.DashBoardActivity
 import com.orion.ri.activities.register.RegisterActivity
 import com.orion.ri.databinding.ActivityLoginBinding
 
@@ -68,8 +68,9 @@ class LoginActivity : BaseActivity() {
         if (user == null) {
             //user doesnt exist
         } else {
-            DashBoardActivity.launchActivity(this)
-            finish()
+            val intent = Intent(this, StartPageActivity::class.java)
+            startActivity(intent)
+//            finish()
         }
     }
 
@@ -78,7 +79,7 @@ class LoginActivity : BaseActivity() {
 
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            DashBoardActivity.launchActivity(this)
+            StartPageActivity.launchActivity(this)
             finish()
         }
     }

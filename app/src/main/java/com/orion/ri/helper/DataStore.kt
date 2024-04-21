@@ -7,8 +7,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.orion.ri.RIApplication
 import com.orion.ri.activities.dashboard.DataStoreKeys
-import com.orion.ri.model.employee.EmployeeDataClass
-import com.orion.ri.model.project.ProjectsDataItem
+import com.orion.ri.model.response.EmployeesResponse
+import com.orion.ri.model.response.ProjectResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -19,7 +19,7 @@ val Context.appDataStore: DataStore<Preferences> by preferencesDataStore(name = 
 class DataStoreHelper(private val context: Context) {
 
 
-    fun saveCurrentEmployeeProfile(employee1: EmployeeDataClass) {
+    fun saveCurrentEmployeeProfile(employee1: EmployeesResponse?) {
         runBlocking {
             appDataStore.edit { settings ->
                 val gson = Gson()
@@ -30,12 +30,15 @@ class DataStoreHelper(private val context: Context) {
 
     }
 
-    suspend fun getCurrentEmployeeProfile(): EmployeeDataClass {
-        val stringEmployee = appDataStore.data.first()[DataStoreKeys.CURRENT_USER_DATA]
-        val gson = Gson()
-        val employee: EmployeeDataClass =
-            gson.fromJson(stringEmployee, EmployeeDataClass::class.java)
-        return employee
+    fun getCurrentEmployeeProfile(): EmployeesResponse {
+        val item = runBlocking {
+            val stringEmployee = appDataStore.data.first()[DataStoreKeys.CURRENT_USER_DATA]
+            val gson = Gson()
+            val employee: EmployeesResponse =
+                gson.fromJson(stringEmployee, EmployeesResponse::class.java)
+            return@runBlocking employee
+        }
+        return item
     }
 
     fun saveCurrentUserType(userType: String) {
@@ -51,10 +54,10 @@ class DataStoreHelper(private val context: Context) {
         val item = runBlocking {
             return@runBlocking appDataStore.data.first()[DataStoreKeys.USER_TYPE]
         }
-        return item?:"employee"
+        return item ?: "employee"
     }
 
-    fun saveProjects(projects: List<ProjectsDataItem>) {
+    fun saveAllProjects(projects: List<ProjectResponse>?) {
         runBlocking {
             appDataStore.edit { settings ->
                 val gson = Gson()
@@ -64,24 +67,28 @@ class DataStoreHelper(private val context: Context) {
         }
     }
 
-    suspend fun getProjects(): List<ProjectsDataItem> {
-        return try {
-            val stringProjectsList = appDataStore.data.first()[DataStoreKeys.PROJECTS_LIST]
-            if (stringProjectsList.isNullOrEmpty()) {
+    fun getAllProjects(): List<ProjectResponse> {
+        val projects = runBlocking {
+            return@runBlocking try {
+                val stringProjectsList = appDataStore.data.first()[DataStoreKeys.PROJECTS_LIST]
+                if (stringProjectsList.isNullOrEmpty()) {
+                    emptyList()
+                } else {
+                    val gson = Gson()
+                    val itemType = object : TypeToken<List<ProjectResponse>>() {}.type
+                    gson.fromJson<List<ProjectResponse>>(stringProjectsList, itemType)
+                }
+            } catch (e: Exception) {
                 emptyList()
-            } else {
-                val gson = Gson()
-                val itemType = object : TypeToken<List<ProjectsDataItem>>() {}.type
-                gson.fromJson<List<ProjectsDataItem>>(stringProjectsList, itemType)
             }
-        } catch (e: Exception) {
-            emptyList()
         }
+        return projects
+
     }
 
-    fun saveAllUsers(employees: List<EmployeeDataClass>) {
+    fun saveAllUsers(employees: List<EmployeesResponse>) {
         runBlocking {
-            appDataStore.edit { settings->
+            appDataStore.edit { settings ->
                 val gson = Gson()
                 val employeesList = gson.toJson(employees)
                 settings[DataStoreKeys.EMPLOYEES_LIST] = employeesList
@@ -90,20 +97,26 @@ class DataStoreHelper(private val context: Context) {
     }
 
 
-    suspend fun getAllUsers(): List<EmployeeDataClass> {
-        return try {
-            val stringEmployeesList = appDataStore.data.first()[DataStoreKeys.EMPLOYEES_LIST]
-            if (stringEmployeesList.isNullOrEmpty()) {
+    fun getAllUsers(): List<EmployeesResponse> {
+        val items = runBlocking {
+            return@runBlocking try {
+                val stringEmployeesList = appDataStore.data.first()[DataStoreKeys.EMPLOYEES_LIST]
+                if (stringEmployeesList.isNullOrEmpty()) {
+                    emptyList()
+                } else {
+                    val gson = Gson()
+                    val itemType = object : TypeToken<List<EmployeesResponse>>() {}.type
+                    gson.fromJson<List<EmployeesResponse>>(stringEmployeesList, itemType)
+                }
+            } catch (e: Exception) {
                 emptyList()
-            } else {
-                val gson = Gson()
-                val itemType = object : TypeToken<List<EmployeeDataClass>>() {}.type
-                gson.fromJson<List<EmployeeDataClass>>(stringEmployeesList, itemType)
             }
-        } catch (e: Exception) {
-            emptyList()
         }
+        return items
     }
+
+
+
     companion object {
         @Volatile
         private var INSTANCE: DataStoreHelper? = null

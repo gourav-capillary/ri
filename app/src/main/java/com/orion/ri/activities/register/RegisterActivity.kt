@@ -9,8 +9,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
+import com.orion.ri.activities.splash.StartPageActivity
 import com.orion.ri.activities.base.BaseActivity
-import com.orion.ri.activities.dashboard.DashBoardActivity
 import com.orion.ri.activities.login.LoginActivity
 import com.orion.ri.databinding.ActivityRegisterBinding
 
@@ -75,7 +75,7 @@ class RegisterActivity: BaseActivity() {
         if (user == null){
             //show error
         }else{
-            DashBoardActivity.launchActivity(this)
+            StartPageActivity.launchActivity(this)
         }
 
     }
@@ -84,7 +84,7 @@ class RegisterActivity: BaseActivity() {
         auth = Firebase.auth
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            DashBoardActivity.launchActivity(this)
+            StartPageActivity.launchActivity(this)
             finish()
         }
 

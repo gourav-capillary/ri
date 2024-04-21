@@ -1,5 +1,6 @@
 package com.orion.ri.fragments.project.projectcategory.ongoing
 
+import DataStoreHelper
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,8 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orion.ri.activities.project.ProjectDetailsActivity
 import com.orion.ri.databinding.FragmentProjectOngoingBinding
-import com.orion.ri.fragments.project.ProjectViewModel
-import com.orion.ri.model.project.ProjectsDataItem
+import com.orion.ri.viewmodels.ProjectViewModel
+import com.orion.ri.model.response.ProjectResponse
 
 class OnGoingProjectFragment : Fragment() {
     private lateinit var binding: FragmentProjectOngoingBinding
@@ -31,8 +32,12 @@ class OnGoingProjectFragment : Fragment() {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
     private fun init() {
-        val ongoingProjectsList = projectViewModel.getProjectsList()
+        val ongoingProjectsList = DataStoreHelper.getInstance().getAllProjects()
 
         if (ongoingProjectsList.isEmpty()) {
             binding.rvOnGoingProjects.visibility = View.GONE
@@ -47,7 +52,7 @@ class OnGoingProjectFragment : Fragment() {
 
         val adapter =
             OnGoingProjectsAdapter(context, ongoingProjectsList, object : ProjectClickedListener {
-                override fun clickProject(ongoingProject: ProjectsDataItem) {
+                override fun clickProject(ongoingProject: ProjectResponse) {
                     ProjectDetailsActivity.launchActivity(requireActivity(), ongoingProject)
                 }
 

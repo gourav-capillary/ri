@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.orion.ri.R
 import com.orion.ri.databinding.ItemOngoingProjectsBinding
-import com.orion.ri.model.project.ProjectsDataItem
+import com.orion.ri.model.response.ProjectResponse
 
 class OnGoingProjectsAdapter(
     context: Context?,
-    private val ongoingProjectsList: List<ProjectsDataItem>,
+    private val ongoingProjectsList: List<ProjectResponse>,
     val clickListener: ProjectClickedListener,
 ) : RecyclerView.Adapter<OnGoingProjectsAdapter.OnGoingProjectsViewHolder>() {
 
@@ -32,7 +32,7 @@ class OnGoingProjectsAdapter(
 
     class OnGoingProjectsViewHolder(private val binding: ItemOngoingProjectsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(project: ProjectsDataItem, clickListener: ProjectClickedListener) {
+        fun bind(project: ProjectResponse, clickListener: ProjectClickedListener) {
 
             binding.root.setOnClickListener{
                 clickListener.clickProject(project)
@@ -51,5 +51,5 @@ class OnGoingProjectsAdapter(
 }
 
 interface ProjectClickedListener {
-    fun clickProject(ongoingProject: ProjectsDataItem)
+    fun clickProject(ongoingProject: ProjectResponse)
 }

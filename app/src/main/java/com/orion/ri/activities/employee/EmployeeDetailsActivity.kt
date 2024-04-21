@@ -1,5 +1,6 @@
 package com.orion.ri.activities.employee
 
+import DataStoreHelper
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
@@ -8,17 +9,21 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.orion.ri.activities.base.BaseActivity
 import com.orion.ri.databinding.ActivityEmployeeDetailsBinding
-import com.orion.ri.model.employee.EmployeeDataClass
+import com.orion.ri.helper.Utils
+import com.orion.ri.model.response.EmployeesResponse
+import com.orion.ri.viewmodels.EmployeeViewModel
 
 class EmployeeDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityEmployeeDetailsBinding
-    lateinit var employeeObject: EmployeeDataClass
+    lateinit var employeeObject: EmployeesResponse
+    private val employeeViewModel: EmployeeViewModel by viewModels()
     private val CALL_PERMISSION_REQUEST_CODE = 101
 
 
@@ -84,6 +89,7 @@ class EmployeeDetailsActivity : BaseActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CALL_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, make the call
@@ -98,19 +104,19 @@ class EmployeeDetailsActivity : BaseActivity() {
     fun showConfirmationDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Confirmation")
-        builder.setMessage("Are you sure you want to delete?")
+        builder.setMessage("Are you sure you want to delete this employee?")
 
-        // "Yes" Button
         builder.setPositiveButton("Yes") { dialog, which ->
-            println("POSITIVE WORKING")
             Toast.makeText(this@EmployeeDetailsActivity, "Confirmed!", Toast.LENGTH_SHORT).show()
+            employeeViewModel.deleteEmployee(employeeObject.id)
             dialog.dismiss() // Dismiss the dialog
+
+            val task = { finish() }
+            Utils.scheduleTaskWithCountDownTimer(2000, task)
+
         }
 
-        // "No" Button
         builder.setNegativeButton("No") { dialog, which ->
-            println("NEGATIVE WORKING")
-
             Toast.makeText(this@EmployeeDetailsActivity, "Cancelled!", Toast.LENGTH_SHORT).show()
             dialog.dismiss() // Dismiss the dialog
         }
@@ -122,10 +128,10 @@ class EmployeeDetailsActivity : BaseActivity() {
     private fun getIntentData() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             employeeObject = intent.getSerializableExtra(
-                "EMPLOYEE_DETAILS", EmployeeDataClass::class.java
+                "EMPLOYEE_DETAILS", EmployeesResponse::class.java
             )!!
         } else {
-            employeeObject = intent.getSerializableExtra("EMPLOYEE_DETAILS") as EmployeeDataClass
+            employeeObject = intent.getSerializableExtra("EMPLOYEE_DETAILS") as EmployeesResponse
         }
     }
 
@@ -138,7 +144,7 @@ class EmployeeDetailsActivity : BaseActivity() {
     }
 
     companion object {
-        fun launchActivity(activity: Activity, employee: EmployeeDataClass) {
+        fun launchActivity(activity: Activity, employee: EmployeesResponse) {
             val intent = Intent(activity, EmployeeDetailsActivity::class.java)
             intent.putExtra("EMPLOYEE_DETAILS", employee)
             activity.startActivity(intent)

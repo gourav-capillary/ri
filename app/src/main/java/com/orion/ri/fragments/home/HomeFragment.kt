@@ -1,23 +1,43 @@
 package com.orion.ri.fragments.home
 
+import DataStoreHelper
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orion.ri.R
 import com.orion.ri.databinding.FragmentHomeBinding
+import com.orion.ri.helper.Utils
 import com.orion.ri.model.home.HomeBanner
 import com.orion.ri.model.home.HomeCard
+import com.orion.ri.model.response.EmployeesResponse
+import com.orion.ri.viewmodels.CommonViewModel
 
 class HomeFragment : Fragment() {
-    lateinit var binding : FragmentHomeBinding
+    lateinit var binding: FragmentHomeBinding
+    val commonViewModel: CommonViewModel by viewModels()
+
     val cardsList = listOf(
-        HomeCard("Ongoing Projects", drawable = R.drawable.home_banner_ongoing, backgroundColor = "#FFAB9B"),
-        HomeCard("Ongoing Projects", drawable = R.drawable.home_banner_ongoing, backgroundColor = "#FFDA55"),
-    HomeCard("Upcoming Projects", drawable = R.drawable.home_banner_upcoming, backgroundColor = "#BCC3FF")
+        HomeCard(
+            "Ongoing Projects",
+            drawable = R.drawable.home_banner_ongoing,
+            backgroundColor = "#FFAB9B"
+        ),
+        HomeCard(
+            "Ongoing Projects",
+            drawable = R.drawable.home_banner_ongoing,
+            backgroundColor = "#FFDA55"
+        ),
+        HomeCard(
+            "Upcoming Projects",
+            drawable = R.drawable.home_banner_upcoming,
+            backgroundColor = "#BCC3FF"
+        )
     )
 
     val bannerList = listOf(
@@ -31,7 +51,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater,container,false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -41,15 +61,32 @@ class HomeFragment : Fragment() {
     }
 
     private fun init() {
+        setupUI()
         setupAdapter()
+        setupViewModelObservers()
+    }
+
+    private fun setupViewModelObservers() {
+        val task = {
+            val currentUser = DataStoreHelper.getInstance().getCurrentEmployeeProfile()
+
+            binding.empName.text = currentUser.name
+            binding.empDesignation.text = currentUser.designation
+        }
+        Utils.scheduleTaskWithCountDownTimer(100, task)
+    }
+
+    private fun setupUI() {
+//        val profile = DataStoreHelper.getInstance().getCurrentEmployeeProfile()
+
     }
 
     private fun setupAdapter() {
         //cards adapter
-        val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
+        val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.rvCards.layoutManager = layoutManager
 
-        val cardsAdapter = HomeCardsAdapter(cardsList,object :HomeCardClickListener{
+        val cardsAdapter = HomeCardsAdapter(cardsList, object : HomeCardClickListener {
             override fun onHomeCardClicked() {
 
             }
@@ -59,7 +96,7 @@ class HomeFragment : Fragment() {
 
 
         //banner adapter
-        val bannerLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL,false)
+        val bannerLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.rvBanner.layoutManager = bannerLayoutManager
 
         val bannerAdapter = HomeBannerAdapter(bannerList)
