@@ -1,5 +1,6 @@
 package com.orion.ri.fragments.task
 
+import DataStoreHelper
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,39 +12,12 @@ import com.orion.ri.activities.task.AddTaskActivity
 import com.orion.ri.activities.task.TaskDetailsActivity
 import com.orion.ri.databinding.FragmentTaskBinding
 import com.orion.ri.helper.AppConstants
-import com.orion.ri.model.task.TaskItem
+import com.orion.ri.model.response.TaskResponse
 
 class TaskFragment : Fragment() {
     private lateinit var binding: FragmentTaskBinding
+    var tasksList :MutableList<TaskResponse>? =null
 
-    val tasksList = listOf(
-        TaskItem(
-            "Complete Report",
-            "Write a detailed report on the project progress.",
-            "id001",
-            "2024-04-10",
-        ), TaskItem(
-            "Prepare Presentation",
-            "Create slides for the upcoming meeting.",
-            "id002",
-            "2024-04-15",
-        ), TaskItem(
-            "Review Code Changes",
-            "Review and merge recent code changes.",
-            "id003",
-            "2024-04-20",
-        ), TaskItem(
-            "Bug Fixes",
-            "Address reported bugs and fix issues.",
-            "id004",
-            "2024-04-25",
-        ), TaskItem(
-            "Jhadu Pocha",
-            "Saaf safai karo bhai",
-            "id005",
-            "2024-04-25",
-        )
-    )
 
 
     override fun onCreateView(
@@ -59,12 +33,17 @@ class TaskFragment : Fragment() {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
     private fun init() {
         basicSetup()
         setViewByUserType()
         setupAdapter()
         setListeners()
     }
+
 
     private fun setListeners() {
         binding.toolbar.add.setOnClickListener {
@@ -79,9 +58,11 @@ class TaskFragment : Fragment() {
         }
     }
     private fun setupAdapter() {
+
+        val tasksList = DataStoreHelper.getInstance().getAllTasks()
         binding.rvTasks.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.rvTasks.adapter = TasksAdapter(tasksList,object :TaskClickedListener{
-            override fun clickTask(task: TaskItem) {
+            override fun clickTask(task: TaskResponse) {
                 TaskDetailsActivity.launchActivity(requireActivity(),task)
             }
 

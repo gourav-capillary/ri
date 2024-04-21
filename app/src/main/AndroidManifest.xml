@@ -22,9 +22,7 @@
         android:theme="@style/Base.Theme.RI"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".activities.splash.HelloActivity"
-            android:exported="false" />
+
         <activity
             android:name=".activities.employee.EmployeeDetailsActivity"
             android:exported="false"
@@ -47,13 +45,16 @@
             android:theme="@style/Base.Theme.RI" />
         <activity
             android:name=".activities.project.ProjectDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.RI" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Base.Theme.RI" />
         <activity
             android:name=".activities.login.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Base.Theme.RI">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,7 +63,8 @@
         </activity>
         <activity
             android:name=".activities.register.RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.RI" />
         <activity
             android:name=".activities.dashboard.DashBoardActivity"
             android:exported="false"

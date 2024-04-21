@@ -10,4 +10,8 @@ object APIEndPoints {
     const val PROJECTS ="/project"
     const val PROJECT_DELETE= "/project/{id}"
 
+
+    const val TASKS ="/task"
+    const val TASK_DELETE= "/task/{id}"
+
 }

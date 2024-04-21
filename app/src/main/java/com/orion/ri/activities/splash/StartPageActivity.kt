@@ -39,7 +39,6 @@ class StartPageActivity : BaseActivity() {
     private fun getCurrentUserDetails() {
         val email = auth.currentUser?.email
         commonViewModel.getCurrentUserProfileByEmailViewModel(email!!)?.observe(this) { response ->
-
             if (response?.isError() == true) {
                 Utils.showToast(this,"error: ${response.error}")
             }
@@ -48,16 +47,17 @@ class StartPageActivity : BaseActivity() {
             }
             if (response?.isSuccess() == true) {
                 val currentUser = (response.body as EmployeesResponse)
-                DataStoreHelper.getInstance().saveCurrentEmployeeProfile(currentUser)
+                DataStoreHelper.getInstance().saveCurrentUserProfile(currentUser)
                 DataStoreHelper.getInstance().saveCurrentUserType(currentUser.userType!!)
+                commonViewModel.getAllEmployees()
+                commonViewModel.getAllProjects()
+                commonViewModel.getAllTasks()
             }
-
         }
     }
 
     private fun getBasicApiData() {
-        commonViewModel.getAllEmployees()
-        commonViewModel.getAllProjects()
+
     }
 
     private fun doThis() {

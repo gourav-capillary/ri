@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.orion.ri.databinding.ItemTaskBannerBinding
 import com.orion.ri.helper.Utils
-import com.orion.ri.model.task.TaskItem
+import com.orion.ri.model.response.TaskResponse
 
 class TasksAdapter(
-    private val tasksList: List<TaskItem>,
+    private val tasksList: List<TaskResponse>,
     val clickListener: TaskClickedListener
 ) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
@@ -23,24 +23,24 @@ class TasksAdapter(
     }
 
     override fun onBindViewHolder(holder: TasksViewHolder, position: Int) {
-        val card: TaskItem = tasksList[position]
+        val card: TaskResponse = tasksList[position]
         holder.bind(card, position,clickListener)
     }
 
     class TasksViewHolder(private val binding: ItemTaskBannerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(task: TaskItem, position: Int, clickListener: TaskClickedListener) {
+        fun bind(task: TaskResponse, position: Int, clickListener: TaskClickedListener) {
 
             binding.root.setOnClickListener{
                 clickListener.clickTask(task)
             }
 
+            Utils.DateFormats
             binding.container.setBackgroundResource(Utils.getBackgroundByPosition(position))
             binding.taskName.text = task.name
             binding.taskDescription.text = task.description
-            binding.progressBarHorizontal.progress = 50
-            binding.tvProgress.text = "${task.progress}%"
-            binding.taskDeadline.text = task.deadline
+            val date = Utils.parseDateFromString(task.deadline,Utils.DateFormats.dateFormatUnknown)
+            binding.taskDeadline.text = Utils.DateFormats.dateFormatDDMMYYYY.format(date)
 
         }
 
@@ -50,6 +50,6 @@ class TasksAdapter(
 }
 
 interface TaskClickedListener {
-    fun clickTask(task: TaskItem)
+    fun clickTask(task: TaskResponse)
 }
 

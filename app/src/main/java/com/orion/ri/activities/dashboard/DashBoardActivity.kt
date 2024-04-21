@@ -106,7 +106,7 @@ class DashBoardActivity : BaseActivity() {
 
     private fun basicSetup() {
 
-        val currentUser = DataStoreHelper.getInstance().getCurrentEmployeeProfile()
+        val currentUser = DataStoreHelper.getInstance().getCurrentUserProfile()
         setupUI(currentUser)
         if (actionBar != null) {
             actionBar?.hide()

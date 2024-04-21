@@ -23,6 +23,10 @@ open class CommonViewModel : ViewModel() {
         apiRepository.getAllProjectsData()
     }
 
+    fun getAllTasks() {
+        apiRepository.getAllTasksData()
+    }
+
     fun getCurrentUserProfileByEmailViewModel(email: String): MutableLiveData<ApiResponse<*>?>? {
         currentProfileLiveData = MutableLiveData()
         apiRepository.getCurrentUserProfileByEmail(email,object :ApiResponseListener{
@@ -43,5 +47,6 @@ open class CommonViewModel : ViewModel() {
 
         return currentProfileLiveData
     }
+
 
 }

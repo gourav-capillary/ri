@@ -17,5 +17,9 @@ class DataStoreKeys {
         //projects
         val PROJECTS_LIST: Preferences.Key<String> = stringPreferencesKey("projects_list")
 
+        //tasks
+        val TASKS_LIST: Preferences.Key<String> = stringPreferencesKey("tasks_list")
+
+
     }
 }

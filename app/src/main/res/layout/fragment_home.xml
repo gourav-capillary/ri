@@ -84,7 +84,7 @@
             tools:spanCount="2" />
 
         <TextView
-            android:id="@+id/labelBanner"
+            android:id="@+id/labelTasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -99,7 +99,7 @@
             android:id="@+id/rvBanner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/labelBanner"
+            app:layout_constraintTop_toBottomOf="@id/labelTasks"
             tools:listitem="@layout/item_home_banner"
 
             />

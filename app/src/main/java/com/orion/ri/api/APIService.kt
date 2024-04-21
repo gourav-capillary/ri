@@ -2,8 +2,10 @@ package com.orion.ri.api
 
 import com.orion.ri.model.request.EmployeeRequest
 import com.orion.ri.model.request.ProjectRequest
+import com.orion.ri.model.request.TaskRequest
 import com.orion.ri.model.response.EmployeesResponse
 import com.orion.ri.model.response.ProjectResponse
+import com.orion.ri.model.response.TaskResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -32,8 +34,20 @@ interface APIService {
     @POST(APIEndPoints.PROJECTS)
     fun createProject(@Body employee: ProjectRequest): Call<ProjectResponse>
 
+    //tasks
+    @GET(APIEndPoints.TASKS)
+    fun getAllTasks():Call<List<TaskResponse>>
+
+    @POST(APIEndPoints.TASKS)
+    fun createTask(@Body employee: TaskRequest): Call<TaskResponse>
+
+    @DELETE(APIEndPoints.TASK_DELETE)
+    fun deleteTask(@Path("id") id: String): Call<Void>
+
+
     @GET(APIEndPoints.EMPLOYEES_BY_EMAIL)
     fun getUserByEmail(@Path("email") email:String):Call<EmployeesResponse>
+
 
 }
 

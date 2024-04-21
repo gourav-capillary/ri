@@ -8,12 +8,17 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.orion.ri.activities.base.BaseActivity
 import com.orion.ri.databinding.ActivityAddProjectBinding
 import com.orion.ri.helper.Utils
 import com.orion.ri.model.request.ProjectRequest
 import com.orion.ri.viewmodels.ProjectViewModel
 import com.orion.ri.model.response.EmployeesResponse
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class AddProjectActivity : BaseActivity() {
 
@@ -76,6 +81,9 @@ class AddProjectActivity : BaseActivity() {
                 createProjectAndSave()
             }
         }
+        binding.edDeadline.setOnClickListener{
+            showDatePicker()
+        }
     }
 
     private fun createProjectAndSave() {
@@ -117,7 +125,13 @@ class AddProjectActivity : BaseActivity() {
     }
 
     private fun showDatePicker() {
-
+        val calendar = Calendar.getInstance()
+        val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date Of Birth").setSelection(calendar.timeInMillis).build()
+        datePicker.addOnPositiveButtonClickListener { selectedDate ->
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            binding.edDeadline.setText(sdf.format(Date(selectedDate)))
+        }
+        datePicker.show(supportFragmentManager, "DATE_PICKER")
     }
 
 

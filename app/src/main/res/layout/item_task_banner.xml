@@ -44,6 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
         android:text="Deadline: 10/10/2002"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -51,38 +53,6 @@
         app:layout_constraintStart_toStartOf="@id/taskDescription"
         />
 
-
-    <TextView
-        android:id="@+id/tvProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:text="0%"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/progressBarHorizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/progressBarHorizontal" />
-
-    <ProgressBar
-        android:id="@+id/progressBarHorizontal"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="0"
-        android:progressBackgroundTint="#FFFFFF"
-        android:progressTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvProgress"
-
-        app:layout_constraintStart_toStartOf="@id/taskDeadline"
-        app:layout_constraintTop_toBottomOf="@id/taskDeadline"
-        tools:progress="50" />
 
 
 

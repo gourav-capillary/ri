@@ -6,34 +6,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orion.ri.R
 import com.orion.ri.databinding.FragmentHomeBinding
-import com.orion.ri.helper.Utils
 import com.orion.ri.model.home.HomeBanner
 import com.orion.ri.model.home.HomeCard
-import com.orion.ri.model.response.EmployeesResponse
-import com.orion.ri.viewmodels.CommonViewModel
+import com.orion.ri.viewmodels.TaskViewModel
 
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
-    val commonViewModel: CommonViewModel by viewModels()
+    val taskViewModel: TaskViewModel by viewModels()
 
     val cardsList = listOf(
         HomeCard(
             "Ongoing Projects",
             drawable = R.drawable.home_banner_ongoing,
             backgroundColor = "#FFAB9B"
-        ),
-        HomeCard(
+        ), HomeCard(
             "Ongoing Projects",
             drawable = R.drawable.home_banner_ongoing,
             backgroundColor = "#FFDA55"
-        ),
-        HomeCard(
+        ), HomeCard(
             "Upcoming Projects",
             drawable = R.drawable.home_banner_upcoming,
             backgroundColor = "#BCC3FF"
@@ -41,15 +36,13 @@ class HomeFragment : Fragment() {
     )
 
     val bannerList = listOf(
-        HomeBanner("Discover New Horizons", "Explore amazing destinations", "#FF0000"),
-        HomeBanner("Find Your Adventure", "Start your journey today", "#00FF00"),
-        HomeBanner("Escape to Paradise", "Relax and unwind in luxury", "#0000FF")
+        HomeBanner("Discover New Horizons", "Explore amazing destinations"),
+        HomeBanner("Find Your Adventure", "Start your journey today"),
+        HomeBanner("Escape to Paradise", "Relax and unwind in luxury")
     )
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -67,18 +60,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupViewModelObservers() {
-        val task = {
-            val currentUser = DataStoreHelper.getInstance().getCurrentEmployeeProfile()
-
-            binding.empName.text = currentUser.name
-            binding.empDesignation.text = currentUser.designation
-        }
-        Utils.scheduleTaskWithCountDownTimer(100, task)
+        val currentUser = DataStoreHelper.getInstance().getCurrentUserProfile()
+        binding.empName.text = currentUser.name
+        binding.empDesignation.text = currentUser.designation
     }
 
     private fun setupUI() {
-//        val profile = DataStoreHelper.getInstance().getCurrentEmployeeProfile()
-
     }
 
     private fun setupAdapter() {
@@ -96,10 +83,21 @@ class HomeFragment : Fragment() {
 
 
         //banner adapter
+        var items = DataStoreHelper.getInstance().getAllTasks()
+        if (items.size >3){
+            items = items.subList(0,3);
+        }
+
+        if (items.isNullOrEmpty()){
+            binding.labelTasks.visibility = View.GONE
+        }else{
+            binding.labelTasks.visibility = View.VISIBLE
+        }
+
         val bannerLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.rvBanner.layoutManager = bannerLayoutManager
 
-        val bannerAdapter = HomeBannerAdapter(bannerList)
+        val bannerAdapter = HomeBannerAdapter(requireActivity(),items)
         binding.rvBanner.adapter = bannerAdapter
 
     }

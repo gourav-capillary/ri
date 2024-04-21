@@ -1,12 +1,13 @@
 package com.orion.ri.api
 
 import DataStoreHelper
+import com.orion.ri.helper.Utils
 import com.orion.ri.model.response.EmployeesResponse
 import com.orion.ri.model.response.ProjectResponse
+import com.orion.ri.model.response.TaskResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +31,7 @@ class APIRepository {
                             val data = response.body()
                             if (data != null) {
                                 println("AOSHDOSAHDAHSOD " + data)
+                                println("FOR EMPLOYEE CALL" + DataStoreHelper.getInstance().getCurrentUserType())
                                 DataStoreHelper.getInstance().saveAllUsers(data)
                             }
                         } else {
@@ -58,11 +60,18 @@ class APIRepository {
                         call: Call<List<ProjectResponse>>,
                         response: Response<List<ProjectResponse>>
                     ) {
+
                         if (response.isSuccessful) {
                             val data = response.body()
                             if (data != null) {
-                                println("AOSHDOSAHDAHSOD " + data)
-                                DataStoreHelper.getInstance().saveAllProjects(data)
+                                val userType = DataStoreHelper.getInstance().getCurrentUserType()
+                                var filteredProjects:List<ProjectResponse> = listOf()
+                                if (userType == "admin"){
+                                    filteredProjects = data
+                                }else{
+                                    filteredProjects = Utils.filterProjectsForUser(data)
+                                }
+                                DataStoreHelper.getInstance().saveAllProjects(Utils.sortProjectsByDeadline(filteredProjects))
                             }
                         } else {
                             println("ERRRORORR" + response.message())
@@ -78,6 +87,45 @@ class APIRepository {
             }
         }
 
+
+        fun getAllTasksData() {
+            CoroutineScope(Dispatchers.IO).launch {
+                val apiService = APIClient.getApiService(APIService::class.java)
+
+                val call = apiService.getAllTasks()
+                call.enqueue(object : Callback<List<TaskResponse>>{
+                    override fun onResponse(
+                        call: Call<List<TaskResponse>>,
+                        response: Response<List<TaskResponse>>
+                    ) {
+
+                        if (response.isSuccessful) {
+                            val data = response.body()
+                            if (data != null) {
+                                val userType = DataStoreHelper.getInstance().getCurrentUserType()
+                                var filteredTasks:List<TaskResponse> = listOf()
+                                if (userType == "admin"){
+                                    filteredTasks = data
+                                }else{
+                                    filteredTasks = Utils.filterTaskForUser(data)
+                                }
+                                DataStoreHelper.getInstance().saveAllTasks(Utils.sortTasksByDeadline(filteredTasks))
+                            }
+                        } else {
+                            println("ERRRORORR" + response.message())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<TaskResponse>>, t: Throwable) {
+                        println("FAAAAil")
+                    }
+
+                })
+
+
+            }
+        }
+
         fun getCurrentUserProfileByEmail(
             email: String,
             apiResponseListener: ApiResponseListener
@@ -87,28 +135,6 @@ class APIRepository {
 
                 val call = apiService.getUserByEmail(email)
                 call.enqueue(object : CommonNetworkCallback<EmployeesResponse>() {
-
-                    //                    override fun onResponse(
-//                        call: Call<EmployeesResponse>,
-//                        response: Response<EmployeesResponse>
-//                    ) {
-//                        if (response.isSuccessful) {
-//                            val data = response.body()
-//                            if (data != null) {
-//                                DataStoreHelper.getInstance().saveCurrentEmployeeProfile(data)
-//                                apiResponseListener.onSuccess(response.body())
-//                            }
-//                        } else {
-//                            println("ERRRORORR" + response.message())
-//                            callback(null)
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<EmployeesResponse>, t: Throwable) {
-//                        // Handle network failure
-//                        callback(null)
-//                        println("ERRRORORR2222" + t.message)
-//                    }
 
                     override fun onApiResponseSuccess(apiResponse: ApiResponse<*>?) {
                         apiResponseListener.onSuccess(apiResponse)

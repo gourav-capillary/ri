@@ -32,11 +32,11 @@ class EmployeesRepo {
                     call: Call<EmployeesResponse>, response: Response<EmployeesResponse>
                 ) {
                     if (response.isSuccessful) {
-//                        employee.email?.let { employee.password?.let { pswd ->
-//                            createUserInFirebase(it,
-//                                pswd
-//                            )
-//                        } }
+                        employee.email?.let { employee.password?.let { pswd ->
+                            createUserInFirebase(it,
+                                pswd
+                            )
+                        } }
                         APIRepository.getAllEmployeesData()
                     }
                 }
